@@ -51,11 +51,15 @@ app.post('/register', async (req, res) => {
   const email = req.body.email
   try {
     const result = await db.register(username, email)
-    res.json({ status: 'success', data: { id: result.id, key: result.key } })
+    res.json({
+      status: 'success',
+      data: { id: result.id, key: result.apiKey.key },
+    })
   } catch (e) {
     if (e.status === 'fail') {
       res.status(400).json({ status: e.status, data: e.dataError })
     } else {
+      // e.status === 50X
       res.status(500).json({ status: e.status, message: e.message })
     }
   }
@@ -64,8 +68,12 @@ app.post('/register', async (req, res) => {
 app.use(getApiKey)
 app.use(validateApiKey)
 
-app.get('/coucou', async (req, res) => {
-  res.send('coucou')
+app.get('/getUserById/:userId', async (req, res) => {
+  // A implementer
+})
+
+app.get('/myInfo', async (req, res) => {
+  // A implmenter
 })
 
 app.listen(PORT, IP, () => {

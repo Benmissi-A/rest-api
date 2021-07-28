@@ -34,6 +34,7 @@ exports.register = async (username, email) => {
         },
       },
     })
+
     return await prisma.user.findUnique({
       where: {
         id: result.id,
@@ -53,7 +54,7 @@ exports.register = async (username, email) => {
   }
 }
 
-exports.getUserByApiKey = async (apiKeyz) => {
+exports.getUserByApiKey = async (apiKey) => {
   try {
     /* 1ere alternative: la meilleure */
     const result = await prisma.user.findFirst({
@@ -90,7 +91,6 @@ exports.getUserByApiKey = async (apiKeyz) => {
     })*/
     return result
   } catch (e) {
-    console.log(e)
     customizeError(e)
     throw e
   }
