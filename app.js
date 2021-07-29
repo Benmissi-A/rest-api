@@ -29,7 +29,7 @@ const getApiKey = async (req, res, next) => {
 const validateApiKey = async (req, res, next) => {
   try {
     const result = await db.getUserByApiKey(req.apiKey)
-    console.log(result)
+    // Check if user is active
     // check if null result then not found
     if (!result) {
       res.status(403).json({ status: 'fail', data: { key: 'Invalid api key' } })
@@ -68,12 +68,24 @@ app.post('/register', async (req, res) => {
 app.use(getApiKey)
 app.use(validateApiKey)
 
-app.get('/getUserById/:userId', async (req, res) => {
+app.get('/user_by_id/:userId', async (req, res) => {
   // A implementer
 })
 
-app.get('/myInfo', async (req, res) => {
-  // A implmenter
+app.get('/myinfo', async (req, res) => {
+  // A implementer
+})
+
+app.get('/user_by_username/:username', async (req, res) => {
+  // A implementer
+})
+
+app.post('/send_message/:username', async (req, res) => {
+  // A implementer
+})
+
+app.get('/red_message', async (req, res) => {
+  // A implementer
 })
 
 app.listen(PORT, IP, () => {

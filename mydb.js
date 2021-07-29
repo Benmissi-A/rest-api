@@ -75,7 +75,6 @@ exports.getUserByApiKey = async (apiKey) => {
         user: true,
       },
     })*/
-    log(result)
     return result
   } catch (e) {
     customizeError(e)
