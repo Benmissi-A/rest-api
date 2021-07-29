@@ -75,20 +75,7 @@ exports.getUserByApiKey = async (apiKey) => {
         user: true,
       },
     })*/
-    /* 3eme alternative: Ne fonctionne pas???
-    const result = await prisma.user.findMany({
-      select: {
-        username: true,
-        apiKey: {
-          where: {
-            key: apiKeyz,
-          },
-          select: {
-            key: true,
-          },
-        },
-      },
-    })*/
+    log(result)
     return result
   } catch (e) {
     customizeError(e)
