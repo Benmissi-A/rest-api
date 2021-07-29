@@ -84,8 +84,22 @@ exports.getUserByApiKey = async (apiKey) => {
 
 exports.getUserById = async (userId) => {
   try {
-    const result = prisma.user.findUnique({})
+    const result = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    })
+    return result
   } catch (e) {
+    customizeError(e)
     throw e
   }
+}
+
+exports.getUserByUsername = async (username) => {
+  // A implementer
+}
+
+exports.sendMessage = async (srcId, dstId, content) => {
+  // A Implementer
 }
