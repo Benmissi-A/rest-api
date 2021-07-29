@@ -113,4 +113,26 @@ exports.getUserByUsername = async (username) => {
 
 exports.sendMessage = async (srcId, dstId, content) => {
   // A Implementer
+  try {
+    const result = await prisma.message.create({
+      data: {
+        srcId: srcId,
+        dstId: dstId,
+        content: content,
+      },
+    });
+    return result;
+  } catch (e) {
+    customizeError(e);
+    throw e;
+  }
+};
+
+exports.getMessage = async (dstId) => {
+  const result = await prisma.message.findMany({
+    where: {
+      dstId: dstId,
+    },
+  });
+  return result;
 };
