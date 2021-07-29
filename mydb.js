@@ -1,27 +1,27 @@
-const crypto = require('crypto')
-const { PrismaClient, Prisma } = require('@prisma/client')
-const prisma = new PrismaClient()
+const crypto = require("crypto");
+const { PrismaClient, Prisma } = require("@prisma/client");
+const prisma = new PrismaClient();
 
 const customizeError = (e) => {
   // A query error
   if (e instanceof Prisma.PrismaClientKnownRequestError) {
-    e.status = 'fail'
-    e.dataError = {}
+    e.status = "fail";
+    e.dataError = {};
     switch (e.code) {
-      case 'P2002':
-        e.dataError[e.meta.target[0]] = `${e.meta.target[0]} already exists`
-        break
+      case "P2002":
+        e.dataError[e.meta.target[0]] = `${e.meta.target[0]} already exists`;
+        break;
       default:
-        e.dataError[e.meta.target[0]] = e.message
+        e.dataError[e.meta.target[0]] = e.message;
     }
   } else {
-    e.status = 'error'
+    e.status = "error";
   }
-  throw e
-}
+  throw e;
+};
 
 exports.register = async (username, email) => {
-  const apiKey = crypto.randomUUID()
+  const apiKey = crypto.randomUUID();
   try {
     const result = await prisma.user.create({
       data: {
@@ -33,7 +33,7 @@ exports.register = async (username, email) => {
           },
         },
       },
-    })
+    });
 
     return await prisma.user.findUnique({
       where: {
@@ -47,12 +47,12 @@ exports.register = async (username, email) => {
           },
         },
       },
-    })
+    });
   } catch (e) {
-    customizeError(e)
-    throw e
+    customizeError(e);
+    throw e;
   }
-}
+};
 
 exports.getUserByApiKey = async (apiKey) => {
   try {
@@ -65,7 +65,7 @@ exports.getUserByApiKey = async (apiKey) => {
           },
         },
       },
-    })
+    });
     /* 2eme alternative: result est différent
     const result =  await prisma.apiKey.findUnique({
       where: {
@@ -75,12 +75,12 @@ exports.getUserByApiKey = async (apiKey) => {
         user: true,
       },
     })*/
-    return result
+    return result;
   } catch (e) {
-    customizeError(e)
-    throw e
+    customizeError(e);
+    throw e;
   }
-}
+};
 
 exports.getUserById = async (userId) => {
   try {
@@ -88,18 +88,29 @@ exports.getUserById = async (userId) => {
       where: {
         id: userId,
       },
-    })
-    return result
+    });
+    return result;
   } catch (e) {
-    customizeError(e)
-    throw e
+    customizeError(e);
+    throw e;
   }
-}
+};
 
 exports.getUserByUsername = async (username) => {
   // A implementer
-}
+  try {
+    const result = await prisma.user.findUnique({
+      where: {
+        username: username,
+      },
+    });
+    return result;
+  } catch (e) {
+    customizeError(e);
+    throw e;
+  }
+};
 
 exports.sendMessage = async (srcId, dstId, content) => {
   // A Implementer
-}
+};

@@ -105,6 +105,18 @@ app.get('/myinfo', async (req, res) => {
 
 app.get('/user_by_username/:username', async (req, res) => {
   // A implementer
+  const username = req.username;
+  try {
+    const result = await db.getUserByUsername(username)
+    res.json({ status: 'success', data: { user: result } })
+  }catch(e) {
+    if (e.status === 'fail') {
+      res.status(400).json({ status: e.status, data: e.dataError })
+    } else {
+      // e.status === 50X
+      res.status(500).json({ status: e.status, message: e.message })
+    }
+  }
 })
 
 app.post('/send_message/:username', async (req, res) => {
