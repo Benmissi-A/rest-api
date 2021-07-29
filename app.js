@@ -31,7 +31,7 @@ const validateApiKey = async (req, res, next) => {
     const result = await db.getUserByApiKey(req.apiKey)
     // Check if user is active
     // check if null result then not found
-    if (!result) {
+    if (!result || !result.active) {
       res.status(403).json({ status: 'fail', data: { key: 'Invalid api key' } })
     } else {
       req.userId = result.id
@@ -73,7 +73,21 @@ app.get('/user_by_id/:userId', async (req, res) => {
 })
 
 app.get('/myinfo', async (req, res) => {
-  // A implementer
+  const userId = req.userId
+  try {
+    const result = await db.getUserByApiKey(req.apiKey)
+    // Check if user is active
+    // check if null result then not found
+    if (!result || !result.active) {
+      res.status(403).json({ status: 'fail', data: { key: 'Invalid api key' } })
+    } else {
+      req.userId = result.id
+      next()
+    }
+  } catch (e) {
+    console.log(e)
+    res.status(500).json({ code: 'error', message: 'Internal server error' })
+  }
 })
 
 app.get('/user_by_username/:username', async (req, res) => {

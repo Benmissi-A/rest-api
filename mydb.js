@@ -81,3 +81,11 @@ exports.getUserByApiKey = async (apiKey) => {
     throw e
   }
 }
+
+exports.getUserById = async (userId) => {
+  try {
+    const result = prisma.user.findUnique({})
+  } catch (e) {
+    throw e
+  }
+}
